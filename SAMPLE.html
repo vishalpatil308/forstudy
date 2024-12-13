@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vishal Patil's Personal Webpage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto;
+            width: 100px;
+            height: auto;
+        }
+        .content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .content h1 {
+            text-align: center;
+        }
+        .social-links {
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .social-links a {
+            text-decoration: none;
+            color: #4CAF50;
+            margin: 0 1rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+        }
+        .social-links img {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+        .upload-section {
+            margin-top: 2rem;
+        }
+        .upload-section label {
+            display: block;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .upload-section input {
+            display: block;
+            margin: 0.5rem auto;
+        }
+        .file-list {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .file-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .file-list li {
+            margin: 0.5rem 0;
+        }
+        .file-list a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function loadUploadedFiles() {
+            const fileList = JSON.parse(localStorage.getItem('uploadedFiles')) || [];
+            const fileListContainer = document.getElementById('file-list');
+
+            fileList.forEach(file => {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = file.url;
+                link.download = file.name;
+                link.textContent = file.name;
+                listItem.appendChild(link);
+                fileListContainer.appendChild(listItem);
+            });
+        }
+
+        function handleUpload(event) {
+            event.preventDefault();
+
+            const fileInput = document.getElementById('file-upload');
+            const fileListContainer = document.getElementById('file-list');
+            const uploadedFiles = JSON.parse(localStorage.getItem('uploadedFiles')) || [];
+
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fileURL = URL.createObjectURL(file);
+
+                uploadedFiles.push({ name: file.name, url: fileURL });
+                localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = fileURL;
+                link.download = file.name;
+                link.textContent = file.name;
+                listItem.appendChild(link);
+                fileListContainer.appendChild(listItem);
+            } else {
+                alert('Please select a file to upload.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadUploadedFiles);
+    </script>
+</head>
+<body>
+    <header>
+        <img src="https://via.placeholder.com/100" alt="App Logo" class="logo">
+        <h1>Welcome to Vishal Patil's Webpage</h1>
+    </header>
+    <div class="content">
+        <h1>About Me</h1>
+        <p>Hi! I am Vishal Patil, an AI enthusiast and a tech-savvy individual passionate about learning and building innovative projects. Follow me on social media to stay connected.</p>
+
+        <div class="social-links">
+            <a href="https://www.instagram.com/vishalp_30/profilecard/?igsh=ODVmODM2YmwzcHYz" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">Instagram</a>
+            <a href="https://www.linkedin.com/in/vishal-patil-223044265?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn">LinkedIn</a>
+        </div>
+
+        <div class="upload-section">
+            <h2>Upload Your Documents</h2>
+            <form onsubmit="handleUpload(event)" method="post" enctype="multipart/form-data">
+                <label for="file-upload">Choose a document to upload:</label>
+                <input type="file" id="file-upload" name="document" accept=".pdf, .docx, .txt">
+                <button type="submit">Upload</button>
+            </form>
+            <div class="file-list">
+                <h3>Uploaded Files:</h3>
+                <ul id="file-list"></ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
